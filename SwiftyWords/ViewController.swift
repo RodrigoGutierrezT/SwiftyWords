@@ -94,6 +94,21 @@ class ViewController: UIViewController {
             buttonsView.bottomAnchor.constraint(equalTo: view.layoutMarginsGuide.bottomAnchor, constant: -20)
             
         ])
+        
+        let width = 150
+        let height = 80
+        
+        for row in 0..<4 {
+            for column in 0..<5 {
+                let button = UIButton(type: .system)
+                button.titleLabel?.font = UIFont.systemFont(ofSize: 36)
+                button.setTitle("WWW", for: .normal)
+                
+                let frame = CGRect(x: column * width, y: row * height , width: width, height: height)
+                button.frame = frame
+                buttonsView.addSubview(button)
+            }
+        }
     }
 
     override func viewDidLoad() {
