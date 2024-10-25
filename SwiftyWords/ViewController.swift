@@ -129,7 +129,6 @@ class ViewController: UIViewController {
         loadLevel()
     }
     
-    
     @objc func letterTapped(_ sender: UIButton) {
         guard let buttonTitle = sender.titleLabel?.text else { return }
         
@@ -140,6 +139,30 @@ class ViewController: UIViewController {
     
     @objc func submitTapped(_ sender: UIButton) {
         
+        guard let answerText = currentAnswer.text else { return }
+        
+        if let solutionPosition = solutions.firstIndex(of: answerText) {
+            activatedButtons.removeAll()
+            
+            var splitAnswers = answerLabel.text?.components(separatedBy: "\n")
+            splitAnswers?[solutionPosition] = answerText
+            answerLabel.text = splitAnswers?.joined(separator: "\n")
+            
+            currentAnswer.text = ""
+            
+            score += 1
+            
+            if score % 7 == 0 {
+                let ac = UIAlertController(title: "Congratz", message: "Are you ready for the next level?", preferredStyle: .alert)
+                
+                let levelUpAction = UIAlertAction(title: "Let's go", style: .default, handler: levelUp)
+                ac.addAction(levelUpAction)
+                
+                present(ac, animated: true)
+            }
+            
+        }
+        
     }
     
     @objc func clearTapped(_ sender: UIButton) {
@@ -149,6 +172,10 @@ class ViewController: UIViewController {
         
         currentAnswer.text = ""
         activatedButtons.removeAll()
+    }
+    
+    func levelUp(action: UIAlertAction) {
+        //TODO: implement
     }
     
     func loadLevel() {
