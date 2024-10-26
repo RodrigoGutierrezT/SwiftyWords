@@ -165,6 +165,12 @@ class ViewController: UIViewController {
                 present(ac, animated: true)
             }
             
+        } else {
+            let ac = UIAlertController(title: "Wrong!", message: "Please try again", preferredStyle: .alert)
+            
+            ac.addAction(UIAlertAction(title: "OK", style: .default))
+            
+            present(ac, animated: true)
         }
         
     }
