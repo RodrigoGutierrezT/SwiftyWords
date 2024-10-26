@@ -175,7 +175,15 @@ class ViewController: UIViewController {
     }
     
     func levelUp(action: UIAlertAction) {
-        //TODO: implement
+        level += 1
+        
+        solutions.removeAll(keepingCapacity: true)
+        
+        loadLevel()
+        
+        for button in letterButtons {
+            button.isHidden = false
+        }
     }
     
     func loadLevel() {
