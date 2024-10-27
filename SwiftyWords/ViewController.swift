@@ -130,7 +130,9 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        loadLevel()
+        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+            self?.loadLevel()
+        }
     }
     
     @objc func letterTapped(_ sender: UIButton) {
@@ -189,10 +191,14 @@ class ViewController: UIViewController {
         
         solutions.removeAll(keepingCapacity: true)
         
-        loadLevel()
+        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+            self?.loadLevel()
+        }
         
-        for button in letterButtons {
-            button.isHidden = false
+        DispatchQueue.main.async { [weak self] in
+            for button in self?.letterButtons ?? [] {
+                button.isHidden = false
+            }
         }
     }
     
@@ -222,14 +228,18 @@ class ViewController: UIViewController {
             }
         }
         
-        cluesLabel.text = clueString.trimmingCharacters(in: .whitespacesAndNewlines)
-        answerLabel.text = solutionString.trimmingCharacters(in: .whitespacesAndNewlines)
-        
-        letterButtons.shuffle()
-        
-        if letterButtons.count == letterBits.count {
-            for i in 0..<letterButtons.count {
-                letterButtons[i].setTitle(letterBits[i], for: .normal)
+        DispatchQueue.main.async { [weak self] in
+            
+            self?.cluesLabel.text = clueString.trimmingCharacters(in: .whitespacesAndNewlines)
+            self?.answerLabel.text = solutionString.trimmingCharacters(in: .whitespacesAndNewlines)
+            
+            self?.letterButtons.shuffle()
+            
+            if self?.letterButtons.count == letterBits.count {
+                let letterButtonsCount = self?.letterButtons.count ?? 0
+                for i in 0..<letterButtonsCount {
+                    self?.letterButtons[i].setTitle(letterBits[i], for: .normal)
+                }
             }
         }
     }
